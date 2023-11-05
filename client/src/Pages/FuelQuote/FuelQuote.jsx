@@ -26,9 +26,16 @@ const FuelQuote = () => {
   const handleCalculation = () => {
     const gallons = parseFloat(gallonsReq);
     const price = parseFloat(suggestedPrice);
+    var margin = 0;
+    if (gallons>1000){
+      margin = (price*(0.02-0.01+0.02+0.1))
+    }
+    else{
+      margin = (price*(0.02-0.01+0.03+0.1))
+    }
 
     if (!isNaN(gallons) && !isNaN(price)) {
-      const calculatedTotal = gallons * price;
+      const calculatedTotal = gallons * (price+margin);
       setTotalAmountDue(calculatedTotal);
     } else {
       setTotalAmountDue(""); 
@@ -111,7 +118,7 @@ const FuelQuote = () => {
         </div>
         <div class="col">
           {/* suggestedPrice */}
-          <h6>Suggested Price</h6>
+          <h6>Suggested Price (change it to 1.5 constant)</h6>
           <input
             type="text"
             id="gallonsReq"
