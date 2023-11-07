@@ -6,8 +6,8 @@ import Signup from './Pages/Signup'
 import Login from './Pages/Login'
 import FuelQuote from './Pages/FuelQuote/FuelQuote'
 import FuelQuoteHistory from './Pages/FuelQuoteHistory'
-import Profile from './Pages/Profile/Profile'
-
+import DisplayProfile from './Pages/Profile/DisplayProfile'
+import ProfileForm from './Pages/Profile/ProfileForm'
 function App() {
 
   return (
@@ -15,12 +15,13 @@ function App() {
       <Routes>
         Initial Page
         <Route index element={<Home />} />
-        <Route path='/profile' element={<Profile />} />
+        <Route path='/profileForm' element={<ProfileForm />} />
         {/* Register/Login */}
         <Route path='/register' element={<Signup />} />
         <Route path='/login' element={<Login />} />
         {/* Login Content */}
         <Route  element={<Layout/>}>
+          <Route path='/displayProfile' element={<DisplayProfile />} />
           <Route path='/fuelquote' element={<FuelQuote />} />
           <Route path='/fuelquotehistory' element={<FuelQuoteHistory />} />
         </Route>

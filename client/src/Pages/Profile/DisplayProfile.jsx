@@ -1,61 +1,61 @@
 import React, { useState, useEffect } from "react";
 import { useAuthContext } from "../../hooks/useAuthContext";
+import './DisplayProfile.css'
+import { useNavigate } from "react-router-dom";
+import { useProfilesContext } from '../../hooks/useProfileContext'
 
 const DisplayProfile = () => {
   const { user } = useAuthContext();
   const [backendData, setbackendData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const {dispatch} = useProfilesContext()
+  const navigate = useNavigate();
+
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/profile', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${user.token}`
-          }
-        });
-        const json = await response.json();
-        setbackendData(json); 
-        setIsLoading(false);
-      } catch (error) {
-        console.error('Error fetching data: ', error);
-        setIsLoading(false);
+    const fetchProfile = async () => {
+      const response = await fetch('http://localhost:3001/profile', {
+        headers: {'Authorization': `Bearer ${user.token}`},
+      })
+      const json = await response.json()
+      console.log(json)
+      setbackendData(json)
+      setIsLoading(false);
+
+      if (response.ok) {
+        dispatch({type: 'SET_PROFILES', payload: json})
       }
-    };
+    }
 
-    fetchData();
-  }, [user.token]);
-
+    if (user) {
+      fetchProfile()
+    }
+  }, [dispatch, user])
 
   return (
-    <div class="container">
+    <div className="container">
       <h2>Profile</h2>
       {isLoading ? (
-        <div>
-          <div>Loading...</div>
-        </div>
+        <div>Loading...</div>
       ) : (
-        backendData.map((item, idx) => (
-          <div key={index}>
-            <label>Full Name</label>
-            <h6>{item.fullName}</h6>
-            <label>address1</label>
-            <h6>{item.address1}</h6>
-            <label>address2</label>
-            <h6>{item.address2}</h6>
-            <label>city</label>
-            <h6>{item.city}</h6>
-            <label>state</label>
-            <h6>{item.state}</h6>
-            <label>zipCode</label>
-            <h6>{item.zipCode}</h6>
+        Array.isArray(backendData) && backendData.length === 0 ? (
+          navigate('/profileForm')
+        ) : (
+          backendData.map((item) => (
+            <div className='dProfile' key={item.user_id}>
+            <h6>Full Name: {item.fullName}</h6>
+            <h6>address1: {item.address1}</h6>
+            <h6>address2: {item.address2}</h6>
+            <h6>city: {item.city}</h6>
+            <h6>state: {item.state}</h6>
+            <h6>zipCode: {item.zipCode}</h6>
           </div>
-        ))
+          ))
+        )
       )}
-      
     </div>
   );
 };
+
+
 export default DisplayProfile;

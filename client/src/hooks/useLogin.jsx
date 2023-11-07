@@ -26,10 +26,9 @@ export const useLogin = () => {
 
     if (res.ok) {
       localStorage.setItem('user', JSON.stringify(json))
-
       dispatch({type: 'LOGIN', payload: json})
       setIsLoading(false)
-      navigate('/fuelquote')
+      navigate('/displayProfile')
     }
   }
 

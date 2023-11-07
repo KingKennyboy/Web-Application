@@ -3,7 +3,7 @@ import { useAuthContext } from "../../hooks/useAuthContext";
 import { useProfilesContext } from "../../hooks/useProfileContext";
 import { useNavigate } from "react-router-dom";
 
-const ProfileForm = () => {
+const ProfileForm = ({checkNewUserStatus}) => {
   const { dispatch } = useProfilesContext();
   const { user } = useAuthContext();
 
@@ -42,76 +42,79 @@ const ProfileForm = () => {
         Authorization: `Bearer ${user.token}`,
       },
     });
+
+    console.log(profile)
     const json = await response.json();
 
     if (!response.ok) {
       setError(json.error);
+      console.log('error: frontend data post req failed')
     }
     if (response.ok) {
       setError(null);
       dispatch({ type: "CREATE_PROFILE", payload: json });
-      navigate('/profile')
-
+      navigate("/displayProfile")
     }
   };
 
   return (
-    <div class="container">
+    <div className="container">
       <h2>Profile</h2>
-      <form class="row p-3 border bg-light gap-1" onSubmit={handleSubmit}>
+      <form className="row p-3 border bg-light gap-1" onSubmit={handleSubmit}>
         {/* fullName */}
         <label className="row">Full Name</label>
         <input
           type="text"
           id="fullName"
-          maxlength={50}
+          maxLength={50}
           required
           onChange={(e) => setfullName(e.target.value)}
         />
 
         {/* address1 */}
-        <label for="address1" className="row">
+        <label className="row">
           Address 1
         </label>
         <input
           type="text"
           id="address1"
           required
-          maxlength={100}
+          maxLength={100}
           onChange={(e) => setAddress1(e.target.value)}
         />
 
         {/* address2 */}
-        <label for="address2" className="row">
+        <label className="row">
           Address 2
         </label>
         <input
           type="text"
           id="address2"
-          maxlength={100}
+          maxLength={100}
           onChange={(e) => setAddress2(e.target.value)}
         />
 
         {/* city */}
-        <label for="city" className="row">
+        <label className="row">
           City
         </label>
         <input
           type="text"
           id="city"
-          maxlength={100}
+          maxLength={100}
           onChange={(e) => setCity(e.target.value)}
         />
         <label className="row">State</label>
 
         {/* state */}
         <select
+          defaultValue=""
           name="state"
           id="state"
           onClick={(e) => setState(e.target.value)}
           required
         >
-          <option disabled selected value></option>
+          <option disabled value=""></option>
           <option value="AL">AL</option>
           <option value="AK">AK</option>
           <option value="AZ">AZ</option>
@@ -166,21 +169,21 @@ const ProfileForm = () => {
         </select>
 
         {/* zipCode */}
-        <label for="zipcode" className="row">
+        <label className="row">
           Zipcode
         </label>
         <input
           type="text"
           id="zipCode"
-          maxlength={9}
-          minlength={5}
+          maxLength={9}
+          minLength={5}
           pattern="\d*"
           required
           onChange={(e) => setzipCode(e.target.value)}
         />
         {/* Button */}
-        <div class="pt-3">
-          <button class="row btn btn-primary rounded-0">Submit</button>
+        <div className="pt-3">
+          <button className="row btn btn-primary rounded-0">Submit</button>
         </div>
       </form>
     </div>

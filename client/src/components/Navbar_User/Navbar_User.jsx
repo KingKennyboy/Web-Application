@@ -24,7 +24,7 @@ const Navbar_User = () => {
               <span className="gashandle">{user.email}</span>
             </div>
             <div>
-              <Link to="/profile" className="user-link-button">
+              <Link to="/displayProfile" className="user-link-button">
                 <button className="navButton">Profile</button>
               </Link>
               <Link to="/fuelquote" className="user-link-button">

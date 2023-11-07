@@ -8,7 +8,7 @@ const {
 } = require("../Controllers/priceModule");
 const requireAuth = require('../middleware/requireAuth')
 
-const router = express.Router();
+const router = express.Router()
 
 // require auth for all price routes
 router.use(requireAuth)

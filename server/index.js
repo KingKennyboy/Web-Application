@@ -29,7 +29,7 @@ app.use('/users', userRoute);
 app.use('/quoteHistory', qHRoute);
 app.use('/profile', profileRoute);
 app.use('/prices', priceModuleRoute);
-app.use('/api/profiles', profileRoute);
+
 
 // middleware
 app.use((req, res, next) => {

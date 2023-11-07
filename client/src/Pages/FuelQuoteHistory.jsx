@@ -1,33 +1,33 @@
 import React, { useState, useEffect } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
-
+import { useFuelPricesContext } from "../hooks/useFuelPricesContext";
 const FuelQuoteHistory = () => {
   const { user } = useAuthContext();
+  const {dispatch} = useFuelPricesContext()
   const [backendData, setbackendData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://localhost:3001/prices', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${user.token}`
-          }
-        });
-        const json = await response.json();
-        setbackendData(json); // Update the state with the fetched data
-        setIsLoading(false);
-      } catch (error) {
-        console.error('Error fetching data: ', error);
-        setIsLoading(false);
+    const fetchQuotes = async () => {
+      const response = await fetch('http://localhost:3001/prices', {
+        headers: {'Authorization': `Bearer ${user.token}`},
+      })
+      const json = await response.json()
+      setbackendData(json)
+      setIsLoading(false);
+
+      if (response.ok) {
+        dispatch({type: 'SET_FUELPRICES', payload: json})
       }
-    };
+    }
 
-    fetchData();
-  }, [user.token]);
+    if (user) {
+      fetchQuotes()
+    }
+  }, [dispatch, user])
 
+  
   return (
     <div className="container">
       <h2>Fuel Quote History</h2>
@@ -47,8 +47,8 @@ const FuelQuoteHistory = () => {
                 <div className="divTableCell">Loading...</div>
               </div>
             ) : (
-              backendData.map((item, index) => (
-                <div className="divTableRow" key={index}>
+              backendData.map((item) => (
+                <div className="divTableRow" key={item._id}>
                   <div className="divTableCell">{item.gallonsReq}</div>
                   <div className="divTableCell">{item.deliveryAddress}</div>
                   <div className="divTableCell">{item.deliveryDate}</div>

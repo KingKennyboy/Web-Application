@@ -1,82 +1,4 @@
-const Profile = require('../models/profileModel');
 const mongoose = require('mongoose')
-
-// GET all profiles
-const getProfiles = async (req, res) => {
-  const profiles = await Profile.find({})
-
-  res.status(200).json(profiles)
-}
-
-// GET a single profile
-const getProfile = async (req, res) => {
-  const { id } = req.params
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({error: 'No such profile.'})
-  }
-  
-  const profile = await Profile.findById(id)
-
-  if (!profile) {
-    return res.status(404).json({error: 'No such profile'})
-  }
-
-  res.status(200).json(profile)
-}
-
-// POST a new profile
-const createProfile = async (req, res) => {
-  const {fullName, address1, address2, city, state, zipcode} = req.body
-
-  // add doc to db
-  try {
-      const profile = await Profile.create({fullName, address1, address2, city, state, zipcode})
-      res.status(200).json(profile)
-  } catch(error) {
-      res.status(400).json({error: error.message})
-  }
-}
-
-// DELETE a profile
-const deleteProfile = async (req, res) => {
-  const { id } = req.params
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({error: 'No such profile.'})
-  }
-  
-  const profile = await Profile.findOneAndDelete({_id: id})
-
-  if (!profile) {
-    return res.status(404).json({error: 'No such profile'})
-  }
-
-  res.status(200).json(profile)
-}
-
-
-// PATCH a profile
-const patchProfile = async (req, res) => {
-  const { id } = req.params
-
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({error: 'No such profile.'})
-  }
-
-  const profile = await Profile.findOneAndUpdate({_id: id}, {
-    ...req.body
-  })
-
-  if (!profile) {
-    return res.status(404).json({error: 'No such profile'})
-  }
-
-  res.status(200).json(profile)
-}
-
-module.exports = { createProfile, getProfiles, getProfile, deleteProfile, patchProfile};
-/*const mongoose = require('mongoose')
 const Profile = require("../models/profileModel");
 
 // get all profiles
@@ -136,7 +58,10 @@ const createProfile = async (req, res) => {
 
   try {
     const user_id = req.user._id
-    const profile = await Profile.create({fullName, address1, address2, city, state, zipCode, user_id})
+    await Profile.findByIdAndUpdate(user_id, { isFirstTime: false });
+
+
+    const profile = await Profile.create({fullName, address1, address2, city, state, zipCode, isFirstTime: false, user_id})
     res.status(200).json(profile)
   } catch (error) {
     res.status(400).json({error: error.message})
@@ -190,7 +115,7 @@ module.exports = {
 
 
 
-*/
+
 
 
 
