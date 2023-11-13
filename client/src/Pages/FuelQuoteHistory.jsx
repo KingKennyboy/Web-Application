@@ -35,11 +35,11 @@ const FuelQuoteHistory = () => {
         <div className="divTable">
           <div className="divTableBody">
             <div className="divTableRow">
-              <div className="divTableCell">Gallons Requested</div>
-              <div className="divTableCell">Delivery Address</div>
-              <div className="divTableCell">Delivery Date</div>
-              <div className="divTableCell">Suggested Price</div>
-              <div className="divTableCell">Total Amount Due</div>
+              <div className="divTableCell"> <strong>Gallons Requested</strong></div>
+              <div className="divTableCell"> <strong>Delivery Address</strong></div>
+              <div className="divTableCell"> <strong>Delivery Date</strong></div>
+              <div className="divTableCell"> <strong>Suggested Price</strong></div>
+              <div className="divTableCell"> <strong>Total Amount Due</strong></div>
             </div>
 
             {isLoading ? (
