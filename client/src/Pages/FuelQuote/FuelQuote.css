@@ -1,19 +1,14 @@
-.fQTitle {
+.fQ {
   max-width: 700px;
   margin: 40px auto;
   padding: 20px;
-  background: light;
-  border-radius: 4px;
-}
-.fQ {
-  max-width: 700px;
-  margin: 30px auto;
-  padding: 20px;
   background: #f6f4f4;
   border-radius: 4px;
+  
 }
 
 .fQButton{
   display: flex;
   justify-content: center; /* Center horizontally */
+  gap: 30px;
 }
